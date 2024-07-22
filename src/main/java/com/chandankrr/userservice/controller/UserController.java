@@ -19,6 +19,14 @@ public class UserController {
 
     private final UserService userService;
 
+    @Operation(summary = "Create or update user information")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "User information created/updated successfully",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = UserInfoDto.class))),
+            @ApiResponse(responseCode = "404", description = "User not found",
+                    content = @Content(mediaType = "application/json"))
+    })
+    @PostMapping("/createUpdate")
     public ResponseEntity<UserInfoDto> createUpdateUser(@RequestBody UserInfoDto userInfoDto) {
         try {
             UserInfoDto user = userService.createOrUpdateUser(userInfoDto);
@@ -28,6 +36,13 @@ public class UserController {
         }
     }
 
+    @Operation(summary = "Get user information by userId")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "User information retrieved successfully",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = UserInfoDto.class))),
+            @ApiResponse(responseCode = "404", description = "User not found",
+                    content = @Content(mediaType = "application/json"))
+    })
     @GetMapping("/getUser/{userId}")
     public ResponseEntity<UserInfoDto> getUser(@PathVariable String userId) {
         try {
