@@ -37,13 +37,13 @@ public class UserService {
         return userRepository.save(userInfo);
     }
 
-    public UserInfoDto getUser(UserInfoDto userInfoDto) throws Exception {
-        Optional<UserInfo> userInfoDtoOpt = userRepository.findByUserId(userInfoDto.getUserId());
-        if(userInfoDtoOpt.isEmpty()){
+    public UserInfoDto getUserByUserId(String userId) throws Exception {
+        Optional<UserInfo> userInfoOpt = userRepository.findByUserId(userId);
+        if(userInfoOpt.isEmpty()){
             throw new Exception("User not found");
         }
 
-        UserInfo userInfo = userInfoDtoOpt.get();
+        UserInfo userInfo = userInfoOpt.get();
         return userInfoToDto(userInfo);
     }
 

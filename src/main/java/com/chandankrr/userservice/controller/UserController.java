@@ -2,6 +2,11 @@ package com.chandankrr.userservice.controller;
 
 import com.chandankrr.userservice.dto.UserInfoDto;
 import com.chandankrr.userservice.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +19,6 @@ public class UserController {
 
     private final UserService userService;
 
-    @PostMapping("/createUpdate")
     public ResponseEntity<UserInfoDto> createUpdateUser(@RequestBody UserInfoDto userInfoDto) {
         try {
             UserInfoDto user = userService.createOrUpdateUser(userInfoDto);
@@ -24,12 +28,12 @@ public class UserController {
         }
     }
 
-    @GetMapping("/getUser")
-    public ResponseEntity<UserInfoDto> getUser(@RequestBody UserInfoDto userInfoDto){
-        try{
-            UserInfoDto user = userService.getUser(userInfoDto);
+    @GetMapping("/getUser/{userId}")
+    public ResponseEntity<UserInfoDto> getUser(@PathVariable String userId) {
+        try {
+            UserInfoDto user = userService.getUserByUserId(userId);
             return ResponseEntity.ok().body(user);
-        }catch (Exception ex){
+        } catch (Exception ex) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
