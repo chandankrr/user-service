@@ -23,7 +23,6 @@ public class AuthServiceConsumer {
     private static final Logger logger = LoggerFactory.getLogger(AuthServiceConsumer.class);
 
     private static final String EMAIL_REGEX = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
-    private static final String PHONE_REGEX = "^\\+?[1-9]\\d{1,14}$";
 
     @Transactional
     @KafkaListener(topics = "${spring.kafka.topic-json.name}", groupId = "${spring.kafka.consumer.group-id}")
@@ -43,13 +42,13 @@ public class AuthServiceConsumer {
 
             redisService.storeKey(key, Duration.ofHours(1));
             userService.createOrUpdateUser(eventData);
+            logger.info("Saved event data: {}", eventData);
         } catch (Exception e) {
             logger.error("AuthServiceConsumer: An error occurred while consuming kafka event: ", e);
         }
     }
 
     private boolean isInvalid(UserInfoDto eventData) {
-        return !Pattern.matches(EMAIL_REGEX, eventData.getEmail()) ||
-                !Pattern.matches(PHONE_REGEX, String.valueOf(eventData.getPhoneNumber()));
+        return !Pattern.matches(EMAIL_REGEX, eventData.getEmail());
     }
 }

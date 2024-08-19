@@ -31,7 +31,6 @@ public class UserInfoDto {
     @JsonProperty("email")
     private String email;
 
-    @NonNull
     @JsonProperty("phone_number")
     private Long phoneNumber;
 

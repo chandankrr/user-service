@@ -35,7 +35,6 @@ public class UserInfo {
     @NonNull
     private String email;
 
-    @NonNull
     private Long phoneNumber;
 
     private String profilePic;
